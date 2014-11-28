@@ -37,6 +37,15 @@ let ``Update mails after last`` () =
     Assert.IsTrue(success)
 
 [<Test>]
+let ``Get mail id`` () =
+    let processor = new MailProcessor.Processor()
+    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+   
+    let id = MailReader.getMailId(items.Head)
+
+    Assert.IsTrue(id <> "")
+
+[<Test>]
 let ``IsSubjectMatch`` () =
     Assert.IsTrue(MailReader.IsMatch("RE: Daily spam"))
     Assert.IsTrue(MailReader.IsMatch("Re: Daily spam"))

@@ -52,6 +52,9 @@
     let getMailId (mail : EMail) =
         let condition = SearchCondition.Subject(mail.Subject).And(SearchCondition.From(mail.From)).And(SearchCondition.SentOn(System.DateTime.Parse mail.Date))
         getMails(condition)
+            |> Seq.filter (fun x -> x.Headers.["Date"].Equals mail.Date)
+            |> Seq.head
+            |> (fun x -> x.Headers.["Message-ID"])
 
     let IsMatch (input : string) : bool =
         let result = Regex(Common.RegexPattern).IsMatch(input)
@@ -89,7 +92,9 @@
             |>  (fun x -> writeMails(x, path))
 
     let downloadMailsAfterDate (lastMail : DateTime) =
-        let condition = SearchCondition.Subject("Daily spam").And(SearchCondition.SentSince(lastMail))
+        // Why subject amd sentsince only returns mails from that specific date?
+        //let condition = SearchCondition.Subject(Common.Subject).And(SearchCondition.SentSince(lastMail))
+        let condition = SearchCondition.SentSince(lastMail)
         getMails(condition)
             |> validatedMails
             |> Seq.filter(fun x -> System.DateTime.Parse x.Headers.["Date"] > lastMail)

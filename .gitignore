@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+*/src/MailProcessor/Common.fs
 
 # Build results
 [Dd]ebug/

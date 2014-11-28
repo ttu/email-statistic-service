@@ -1,5 +1,6 @@
 ﻿module MailReaderTests
 
+open System
 open NUnit.Framework
 open MailReader
 open MailProcessor
@@ -47,5 +48,7 @@ let ``IsSubjectMatch`` () =
     Assert.IsTrue(MailReader.IsMatch("Re: VS: VS: VS: VS: VS: VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS: VS:VS:Daily spam."))
     Assert.IsTrue(MailReader.IsMatch("Re: VS: VS: VS: VS: VS: VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS: VS:vs:Daily spam."))
     Assert.IsTrue(MailReader.IsMatch("Re: VS: VS: VS: VS: VS: VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS: VS:re:Daily spam."))
+    Assert.IsTrue(MailReader.IsMatch("Re: VS: VS: VS: VS: VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS:VS: VS:VS:Dailyspam."))
     Assert.IsFalse(MailReader.IsMatch("Daily Spam"))
+
    

@@ -37,6 +37,16 @@ let ``Update mails after last`` () =
     Assert.IsTrue(success)
 
 [<Test>]
+let ``updateAndWriteAfterLastDate`` () =
+    let processor = new MailProcessor.Processor()
+    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let lastDate = processor.LastMailDate(items)
+
+    let newMails = MailReader.updateAndWriteAfterLastDate(items, lastDate)
+
+    Assert.IsTrue(items.Length <= newMails.Length)
+
+[<Test>]
 let ``Get mail id`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")

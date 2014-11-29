@@ -10,7 +10,7 @@ open Newtonsoft.Json
 type Processor() =
 
     member this.GetItems (?fullPath : string) : List<EMail> =
-        let path = defaultArg fullPath __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json"
+        let path = defaultArg fullPath (__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
         use textReader = new StreamReader(path)
         let json = textReader.ReadToEnd()
 
@@ -66,3 +66,9 @@ type Processor() =
             |> Seq.groupBy(fun x -> (System.DateTime.Parse x.Date).Year)
             |> Seq.map(fun (key, value) -> (key, Seq.length value))
             |> Seq.toList
+
+    member this.YearsThatHaveData(items : List<EMail>) =
+        items
+            |> Seq.map(fun x -> (System.DateTime.Parse x.Date))
+            |> Seq.map(fun x -> x.Year)
+            |> Seq.distinct

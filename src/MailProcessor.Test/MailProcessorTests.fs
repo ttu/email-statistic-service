@@ -32,6 +32,15 @@ let ``DaysSinceFirstMail `` () =
     Assert.IsTrue(totalDuration > realDays)
 
 [<Test>]
+let ``YearsThatHaveData`` () =
+    let processor = new MailProcessor.Processor()
+    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+
+    let years = processor.YearsThatHaveData(items)
+
+    Assert.IsTrue(Seq.length years > 0)
+
+[<Test>]
 let ``All statistics`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")

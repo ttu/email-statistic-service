@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
@@ -7,11 +8,12 @@ namespace OwinSelfHostWebAPI
     public class MailsController : ApiController
     {
         private List<Common.EMail> _mails = new List<Common.EMail>();
+        private IMailService _service;
 
         public MailsController()
         {
-            var mailP = new MailProcessor.Processor();
-            _mails = mailP.GetAllItems().ToList();
+            _service = Startup.MailService.Value;
+            _mails = _service.GetMails();   
         }
 
         // GET api/mails
@@ -28,24 +30,25 @@ namespace OwinSelfHostWebAPI
             return _mails.Where(m => m.From == sender).Take(10);
         }
 
-        [Route("api/mails/{year}")]
+        [Route("api/mails/year/{year}")]
         [HttpGet]
-        public IEnumerable<Common.EMail> GetWithYear(int year)
+        public IEnumerable<Tuple<string,int>> GetWithYear(int year)
         {
-            if (year < 2010)
-                return Enumerable.Empty<Common.EMail>();
+            return _service.GetYearlyStats(year);
+        }
 
-            // Fri, 18 Jun 2010 09:06:12 +0300
-            // Lets skip all casting etc. and do search with a string
-            string yr = year.ToString();
-            return _mails.Where(m => m.Date.Contains(yr)).Take(10);
+        [Route("api/mails/yearly/all")]
+        [HttpGet]
+        public IEnumerable<Tuple<int,int>> GetYearly()
+        {
+            return _service.GetYearlyStats();
         }
 
         // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/values
         public void Post([FromBody]string value)

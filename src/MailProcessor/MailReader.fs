@@ -100,3 +100,9 @@
             |> Seq.filter(fun x -> System.DateTime.Parse x.Headers.["Date"] > lastMail)
             |> mailMessagesToEMail
             |> Seq.toList
+
+    let updateAndWriteAfterLastDate(oldItems : List<Common.EMail>, lastDate : DateTime) = 
+        let newMails = downloadMailsAfterDate(lastDate)
+        let newCollection = List.append oldItems newMails
+        writeMails(newCollection, __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+        newCollection

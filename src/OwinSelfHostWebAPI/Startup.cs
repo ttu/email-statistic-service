@@ -2,6 +2,7 @@
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Owin;
+using System;
 using System.Net.Http.Headers;
 using System.Web.Http;
 
@@ -9,6 +10,9 @@ namespace OwinSelfHostWebAPI
 {
     public class Startup
     {
+        // DI
+        public static Lazy<IMailService> MailService = new Lazy<IMailService>(() => new MailServiceWrapper());
+
         // This code configures Web API. The Startup class is specified as a type
         // parameter in the WebApp.Start method.
         public void Configuration(IAppBuilder appBuilder)

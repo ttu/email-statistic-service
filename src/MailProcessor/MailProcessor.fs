@@ -50,8 +50,25 @@ type Processor() =
      member this.TotalMailsBySender(items : List<EMail>) =
         items
             |> Seq.groupBy(fun x -> x.From)
-            |> Seq.map(fun (key, value) -> (key, Seq.length value))
+            |> Seq.map(fun (name, mails) -> (name, Seq.length mails))
             |> Seq.sortBy snd
+            |> Seq.toList
+            |> List.rev
+
+    member this.TotalMailsBySenderByYears(items : List<EMail>) =
+        items
+            |> Seq.groupBy(fun x -> x.From)
+            |> Seq.map(fun (name, mails) -> (name, Seq.groupBy (fun x-> (System.DateTime.Parse x.Date).Year) mails))
+            |> Seq.map(fun (name, mailsByYear) -> (name, Seq.map (fun (year, mails) -> (year, Seq.length mails)) mailsByYear))
+            |> Seq.toList
+            |> List.rev
+
+    // Group by year|month
+    member this.TotalMailsBySenderByMonths(items : List<EMail>) =
+        items
+            |> Seq.groupBy(fun x -> x.From)
+            |> Seq.map(fun (name, mails) -> (name, Seq.groupBy (fun x -> (System.DateTime.Parse x.Date).Year.ToString() + "|" + (System.DateTime.Parse x.Date).Month.ToString()) mails))
+            |> Seq.map(fun (name, mailsByYear) -> (name, Seq.map (fun (year, mails) -> (year, Seq.length mails)) mailsByYear))
             |> Seq.toList
             |> List.rev
 

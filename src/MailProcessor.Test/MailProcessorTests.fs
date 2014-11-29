@@ -52,6 +52,9 @@ let ``All statistics`` () =
 
     let yearTotals = processor.TotalMailsByYear(items)
 
+    let bySenderByYears = processor.TotalMailsBySenderByYears(items)
+    let bySenderByMonths = processor.TotalMailsBySenderByMonths(items)
+
     let grouped = processor.TotalMailsBySender(items)
     let g2010 = processor.TotalMailsBySenderByYear(items, 2010)
     let g2011 = processor.TotalMailsBySenderByYear(items, 2011)

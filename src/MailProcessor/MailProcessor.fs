@@ -8,42 +8,47 @@ open Common
 open Newtonsoft.Json
 
 type Processor() =
-    member this.GetItems (fullPath : string) : List<EMail> =
-        use textReader = new StreamReader(fullPath)
+
+    member this.GetItems (?fullPath : string) : List<EMail> =
+        let path = defaultArg fullPath __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json"
+        use textReader = new StreamReader(path)
         let json = textReader.ReadToEnd()
 
         JsonConvert.DeserializeObject<List<EMail>>(json)
 
+     member this.GetAllItems() : List<EMail> =
+        this.GetItems()
+
     member this.LastMail(items : List<EMail>) : EMail =
-        items 
+        items
             |> List.rev
             |> List.head
 
     member this.FirstMailDate(items : List<EMail>) =
-        items 
+        items
             |> List.head
             |> (fun x -> System.DateTime.Parse x.Date)
 
     member this.DaysSinceFirstMail(items : List<EMail>) : int =
-        items 
+        items
             |> List.head
             |> (fun x -> (int)(DateTime.Now.Date - (System.DateTime.Parse x.Date).Date).TotalDays)
 
     member this.DaysThatHaveSentMails(items : List<EMail>) =
-        items 
+        items
             |> List.map((fun x -> (System.DateTime.Parse x.Date).Date))
             |> Seq.distinct
             |> Seq.length
 
     member this.LastMailDate(items : List<EMail>) : DateTime =
-        items 
-            |> List.sortBy(fun x -> System.DateTime.Parse x.Date) 
-            |> List.rev 
-            |> List.head 
+        items
+            |> List.sortBy(fun x -> System.DateTime.Parse x.Date)
+            |> List.rev
+            |> List.head
             |> (fun x -> System.DateTime.Parse x.Date)
 
      member this.TotalMailsBySender(items : List<EMail>) =
-        items 
+        items
             |> Seq.groupBy(fun x -> x.From)
             |> Seq.map(fun (key, value) -> (key, Seq.length value))
             |> Seq.sortBy snd
@@ -51,15 +56,13 @@ type Processor() =
             |> List.rev
 
      member this.TotalMailsBySenderByYear(items : List<EMail>, year : int) =
-        items 
+        items
             |> Seq.filter(fun x -> (System.DateTime.Parse x.Date).Year = year)
             |> Seq.toList
             |> this.TotalMailsBySender
 
      member this.TotalMailsByYear(items : List<EMail>) =
-        items 
+        items
             |> Seq.groupBy(fun x -> (System.DateTime.Parse x.Date).Year)
             |> Seq.map(fun (key, value) -> (key, Seq.length value))
             |> Seq.toList
-
-    

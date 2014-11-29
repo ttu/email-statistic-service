@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MailProcessor.Test", "MailProcessor.Test\MailProcessor.Test.fsproj", "{026A1430-BBB0-4B14-B85F-75645217A5F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwinSelfHostWebAPI", "OwinSelfHostWebAPI\OwinSelfHostWebAPI.csproj", "{0A959D9B-9C77-4206-A1C9-0DA9400BAD55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{026A1430-BBB0-4B14-B85F-75645217A5F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{026A1430-BBB0-4B14-B85F-75645217A5F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{026A1430-BBB0-4B14-B85F-75645217A5F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A959D9B-9C77-4206-A1C9-0DA9400BAD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A959D9B-9C77-4206-A1C9-0DA9400BAD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A959D9B-9C77-4206-A1C9-0DA9400BAD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A959D9B-9C77-4206-A1C9-0DA9400BAD55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <div id="container" style="min-width: 310px; height: 800px; margin: 0 auto"></div>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    <script>
+
+        $(function () {
+
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Yearly messages',
+                    x: -20 //center
+                },
+                xAxis: {
+                    categories: ['2010', '2011', '2012', '2013', '2014']
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total mails'
+                    },
+                    min:0,
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: 'kpl'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                }
+            });
+        
+            $.getJSON('api/mails/users/years', function (jsonData) {
+
+                $.each(jsonData, function (index, values) {
+                    var yearData = {
+                        name: values.m_Item1,
+                        data: _.map(values.m_Item2, function (val, key) { return val.m_Item2 })
+                    };
+
+                    chart.addSeries(yearData);
+                });
+            });
+          
+        });
+    </script>
+</body>
+</html>

@@ -8,7 +8,7 @@ namespace OwinSelfHostWebAPI
     public class MailsController : ApiController
     {
         private List<Common.EMail> _mails = new List<Common.EMail>();
-        private IMailService _service;
+        private MailServiceWrapper _service;
 
         public MailsController()
         {
@@ -42,6 +42,20 @@ namespace OwinSelfHostWebAPI
         public IEnumerable<Tuple<int,int>> GetYearly()
         {
             return _service.GetYearlyStats();
+        }
+
+        [Route("api/mails/yearly/allinone")]
+        [HttpGet]
+        public IEnumerable<int> GetYearlyInOne()
+        {
+            return _service.GetYearlyStats().Select(t => t.Item2).ToList();
+        }
+
+        [Route("api/mails/users/years")]
+        [HttpGet]
+        public IEnumerable<Tuple<string, IEnumerable<Tuple<int, int>>>> GetBySenderByYears()
+        {
+            return _service.GetBySenderByYears();
         }
 
         // GET api/values/5

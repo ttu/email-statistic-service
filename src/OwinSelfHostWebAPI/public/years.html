@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    <script>
+
+        $(function () {
+
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'column'
+                },
+                title: {
+                    text: 'Yearly messages',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: 'Source: gmail.com',
+                    x: -20
+                },
+                xAxis: {
+                    categories: ['2010', '2011', '2012', '2013', '2014']
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total mails'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                }
+            });
+
+            $.getJSON('api/mails/yearly/allinone', function (jsonData) {
+
+                var yearData = {
+                    name: 'Mails',
+                    data: jsonData
+                };
+
+                chart.addSeries(yearData);
+            });
+        });
+    </script>
+</body>
+</html>

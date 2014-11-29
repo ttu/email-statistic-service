@@ -11,7 +11,7 @@ namespace OwinSelfHostWebAPI
     public class Startup
     {
         // DI
-        public static Lazy<IMailService> MailService = new Lazy<IMailService>(() => new MailServiceWrapper());
+        public static Lazy<MailServiceWrapper> MailService = new Lazy<MailServiceWrapper>(() => new MailServiceWrapper());
 
         // This code configures Web API. The Startup class is specified as a type
         // parameter in the WebApp.Start method.

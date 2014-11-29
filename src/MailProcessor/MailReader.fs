@@ -19,7 +19,7 @@
                             let mailToSave =
                                 { From = mail.From.Address
                                   Subject = mail.Subject
-                                  Date = mail.Headers.["Date"] }
+                                  Date = System.DateTime.Parse mail.Headers.["Date"] }
 
                             serializer.Serialize(stream, mailToSave)
                         | false -> printfn "found an email that has no date header, ignoring"
@@ -50,7 +50,7 @@
         getMails(condition)
 
     let getMailId (mail : EMail) =
-        let condition = SearchCondition.Subject(mail.Subject).And(SearchCondition.From(mail.From)).And(SearchCondition.SentOn(System.DateTime.Parse mail.Date))
+        let condition = SearchCondition.Subject(mail.Subject).And(SearchCondition.From(mail.From)).And(SearchCondition.SentOn(mail.Date))
         getMails(condition)
             |> Seq.filter (fun x -> x.Headers.["Date"].Equals mail.Date)
             |> Seq.head
@@ -81,7 +81,7 @@
                 let mailToSave =
                     { From = mail.From.Address
                       Subject = mail.Subject
-                      Date = mail.Headers.["Date"] }
+                      Date = System.DateTime.Parse mail.Headers.["Date"] }
                 mailToSave)
 
     let writeValidFilesToAFile (path : string) =

@@ -27,25 +27,25 @@ type Processor() =
     member this.FirstMailDate(items : List<EMail>) =
         items
             |> List.head
-            |> (fun x -> System.DateTime.Parse x.Date)
+            |> (fun x -> x.Date)
 
     member this.DaysSinceFirstMail(items : List<EMail>) : int =
         items
             |> List.head
-            |> (fun x -> (int)(DateTime.Now.Date - (System.DateTime.Parse x.Date).Date).TotalDays)
+            |> (fun x -> (int)(DateTime.Now.Date - x.Date).TotalDays)
 
     member this.DaysThatHaveSentMails(items : List<EMail>) =
         items
-            |> List.map((fun x -> (System.DateTime.Parse x.Date).Date))
+            |> List.map(fun x -> x.Date.Date)
             |> Seq.distinct
             |> Seq.length
 
     member this.LastMailDate(items : List<EMail>) : DateTime =
         items
-            |> List.sortBy(fun x -> System.DateTime.Parse x.Date)
+            |> List.sortBy(fun x -> x.Date)
             |> List.rev
             |> List.head
-            |> (fun x -> System.DateTime.Parse x.Date)
+            |> (fun x -> x.Date)
 
      member this.TotalMailsBySender(items : List<EMail>) =
         items
@@ -58,7 +58,7 @@ type Processor() =
     member this.TotalMailsBySenderByYears(items : List<EMail>) =
         items
             |> Seq.groupBy(fun x -> x.From)
-            |> Seq.map(fun (name, mails) -> (name, Seq.groupBy (fun x-> (System.DateTime.Parse x.Date).Year) mails))
+            |> Seq.map(fun (name, mails) -> (name, Seq.groupBy (fun x-> x.Date.Year) mails))
             |> Seq.map(fun (name, mailsByYear) -> (name, Seq.map (fun (year, mails) -> (year, Seq.length mails)) mailsByYear))
             |> Seq.toList
             |> List.rev
@@ -67,25 +67,25 @@ type Processor() =
     member this.TotalMailsBySenderByMonths(items : List<EMail>) =
         items
             |> Seq.groupBy(fun x -> x.From)
-            |> Seq.map(fun (name, mails) -> (name, Seq.groupBy (fun x -> (System.DateTime.Parse x.Date).Year.ToString() + "|" + (System.DateTime.Parse x.Date).Month.ToString()) mails))
+            |> Seq.map(fun (name, mails) -> (name, Seq.groupBy (fun x -> x.Date.Year.ToString() + "|" + x.Date.Month.ToString()) mails))
             |> Seq.map(fun (name, mailsByYear) -> (name, Seq.map (fun (year, mails) -> (year, Seq.length mails)) mailsByYear))
             |> Seq.toList
             |> List.rev
 
      member this.TotalMailsBySenderByYear(items : List<EMail>, year : int) =
         items
-            |> Seq.filter(fun x -> (System.DateTime.Parse x.Date).Year = year)
+            |> Seq.filter(fun x -> x.Date.Year = year)
             |> Seq.toList
             |> this.TotalMailsBySender
 
      member this.TotalMailsByYear(items : List<EMail>) =
         items
-            |> Seq.groupBy(fun x -> (System.DateTime.Parse x.Date).Year)
+            |> Seq.groupBy(fun x -> x.Date.Year)
             |> Seq.map(fun (key, value) -> (key, Seq.length value))
             |> Seq.toList
 
     member this.YearsThatHaveData(items : List<EMail>) =
         items
-            |> Seq.map(fun x -> (System.DateTime.Parse x.Date))
+            |> Seq.map(fun x -> x.Date)
             |> Seq.map(fun x -> x.Year)
             |> Seq.distinct

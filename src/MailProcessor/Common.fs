@@ -1,6 +1,8 @@
 ﻿module Common
 
-type EMail = { From : string; Subject : string; Date : string }
+open System
+
+type EMail = { From : string; Subject : string; Date : DateTime }
 
 let MailAddress = "MY_EMAIL"
 let Password = "MY_PASSWORD"

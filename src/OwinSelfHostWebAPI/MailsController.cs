@@ -17,10 +17,17 @@ namespace OwinSelfHostWebAPI
         }
 
         // GET api/mails
-        public IEnumerable<Common.EMail> Get()
+        //public IEnumerable<Common.EMail> Get()
+        //{
+        //    return _mails.Take(10); //.Select(i => new { Sender = i.From, When = i.Date });
+        //    //return new string[] { "value1", "value2" };
+        //}
+
+        [Route("api/mails/updatetime/")]
+        [HttpGet]
+        public DateTime Updated()
         {
-            return _mails.Take(10); //.Select(i => new { Sender = i.From, When = i.Date });
-            //return new string[] { "value1", "value2" };
+            return _service.LastUpdate;
         }
 
         [Route("api/mails/from/{sender}")]
@@ -58,25 +65,18 @@ namespace OwinSelfHostWebAPI
             return _service.GetBySenderByYears();
         }
 
-        // GET api/values/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/values
-        public void Post([FromBody]string value)
+        [Route("api/mails/weekdays/percentage")]
+        [HttpGet]
+        public IEnumerable<Tuple<int, IEnumerable<Tuple<DayOfWeek, double>>>> GetWeekdayPercentage()
         {
+            return _service.GetWeekdayPercentage();
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        [Route("api/mails/weekdays/total")]
+        [HttpGet]
+        public IEnumerable<Tuple<int, IEnumerable<Tuple<DayOfWeek, int>>>> GetWeekdayTotal()
         {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            return _service.GetWeekdayTotal();
         }
     }
 }

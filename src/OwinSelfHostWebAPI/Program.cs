@@ -16,7 +16,7 @@ namespace OwinSelfHostWebAPI
                 // Create HttpCient and make a request to api/values
                 var client = new HttpClient();
 
-                var response = client.GetAsync(baseAddress + "api/mails").Result;
+                var response = client.GetAsync(baseAddress + "api/mails/updatetime/").Result;
 
                 Console.WriteLine(response);
                 Console.WriteLine(response.Content.ReadAsStringAsync().Result);

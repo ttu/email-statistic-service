@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace OwinSelfHostWebAPI
@@ -32,10 +33,14 @@ namespace OwinSelfHostWebAPI
             _fsMails = _proc.GetAllItems();
             _mails = _fsMails.ToList();
 
+            Task.Factory.StartNew(UpdateMails);
+
             _timer.Interval = TimeSpan.FromMinutes(10).TotalMilliseconds;
             _timer.Elapsed += (s, e) => UpdateMails();
             _timer.Start();
         }
+
+        public DateTime LastUpdate { get; private set; }
 
         public List<Common.EMail> GetMails()
         {
@@ -83,15 +88,37 @@ namespace OwinSelfHostWebAPI
             return _proc.TotalMailsBySenderByMonths(_fsMails).ToList();
         }
 
+        public List<Tuple<int, IEnumerable<Tuple<DayOfWeek, int>>>> GetWeekdayTotal()
+        {
+            return _proc.MailsByWeekdays(_fsMails).ToList();
+        }
+
+        public List<Tuple<int, IEnumerable<Tuple<DayOfWeek, double>>>> GetWeekdayPercentage()
+        {
+            return _proc.MailsByWeekdaysPercent(_fsMails).ToList();
+        }
+
         private void UpdateMails()
         {
             var lastDate = _proc.LastMailDate(_fsMails);
 
-            var newMails = MailReader.downloadMailsAfterDate(lastDate);
+            FSharpList<Common.EMail> newMails;
+
+            try
+            {
+                newMails = MailReader.downloadMailsAfterDate(lastDate);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("{0} -Excpetion: {1}", DateTime.Now, ex.Message);
+                return;
+            }
 
             var updatedCollection = MailReader.updateAndWriteAfterLastDate(_fsMails, lastDate);
 
-            Debug.WriteLine("{0} - New items: {1}", DateTime.Now, updatedCollection.Length - _fsMails.Length);
+            LastUpdate = DateTime.Now;
+
+            Debug.WriteLine("{0} - New items: {1}", LastUpdate, updatedCollection.Length - _fsMails.Length);
 
             _fsMails = updatedCollection;
 

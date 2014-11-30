@@ -5,10 +5,12 @@ open NUnit.Framework
 open MailProcessor
 open MailReader
 
+let path = __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json"
+
 [<Test>]
 let ``Process items`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
 
     let count = Seq.length items
     Assert.IsTrue(count > 0)
@@ -16,7 +18,7 @@ let ``Process items`` () =
 [<Test>]
 let ``Get last date`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
     let lastDate = processor.LastMailDate(items)
 
     Assert.IsTrue(lastDate.Ticks > 0L)
@@ -24,7 +26,7 @@ let ``Get last date`` () =
 [<Test>]
 let ``DaysSinceFirstMail `` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
 
     let totalDuration = processor.DaysSinceFirstMail(items)
     let realDays = processor.DaysThatHaveSentMails(items)
@@ -34,7 +36,7 @@ let ``DaysSinceFirstMail `` () =
 [<Test>]
 let ``YearsThatHaveData`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
 
     let years = processor.YearsThatHaveData(items)
 
@@ -43,7 +45,7 @@ let ``YearsThatHaveData`` () =
 [<Test>]
 let ``All statistics`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
 
     let count = Seq.length items
 
@@ -54,6 +56,9 @@ let ``All statistics`` () =
 
     let bySenderByYears = processor.TotalMailsBySenderByYears(items)
     let bySenderByMonths = processor.TotalMailsBySenderByMonths(items)
+
+    let mailByWeekDays = processor.MailsByWeekdays(items)
+    let mailByWeekDaysPercent = processor.MailsByWeekdaysPercent(items)
 
     let grouped = processor.TotalMailsBySender(items)
     let g2010 = processor.TotalMailsBySenderByYear(items, 2010)

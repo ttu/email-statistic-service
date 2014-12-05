@@ -5,15 +5,17 @@ open NUnit.Framework
 open MailReader
 open MailProcessor
 
+let path = __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json"
+
 [<Test>]
 let ``writeValidFilesToAFile`` () =
-    let success = MailReader.writeValidFilesToAFile(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let success = MailReader.writeValidFilesToAFile(path)
     Assert.IsTrue(success)
 
 [<Test>]
 let ``Get mails after date`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
     let lastDate = processor.LastMailDate(items)
 
     let newMails = MailReader.downloadMailsAfterDate(lastDate)
@@ -25,21 +27,21 @@ let ``Get mails after date`` () =
 [<Test>]
 let ``Update mails after last`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
     let lastDate = processor.LastMailDate(items)
 
     let newMails = MailReader.downloadMailsAfterDate(lastDate)
 
     let count = Seq.length newMails
 
-    let success = MailReader.writeMails(List.append items newMails, __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let success = MailReader.writeMails(List.append items newMails, path)
 
     Assert.IsTrue(success)
 
 [<Test>]
 let ``updateAndWriteAfterLastDate`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
     let lastDate = processor.LastMailDate(items)
 
     let newMails = MailReader.updateAndWriteAfterLastDate(items, lastDate)
@@ -49,7 +51,7 @@ let ``updateAndWriteAfterLastDate`` () =
 [<Test>]
 let ``Get mail id`` () =
     let processor = new MailProcessor.Processor()
-    let items = processor.GetItems(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+    let items = processor.GetItems(path)
    
     let id = MailReader.getMailId(items.Head)
 

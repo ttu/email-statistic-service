@@ -43,6 +43,43 @@ let ``YearsThatHaveData`` () =
     Assert.IsTrue(Seq.length years > 0)
 
 [<Test>]
+let ``Average mails per days that have mails`` () =
+    let processor = new MailProcessor.Processor()
+    let items = processor.GetItems(path)
+
+    let avg = processor.MessagesPerDay(items)
+
+    Assert.IsTrue(avg > 0)
+
+[<Test>]
+let ``Main page statistics`` () =
+    let processor = new MailProcessor.Processor()
+    let items = processor.GetItems(path)
+
+    // Days since start
+    let totalDuration = processor.DaysSinceFirstMail(items)
+
+    // Days with mails
+    let daysWithMails = processor.DaysThatHaveSentMails(items)
+
+    // Avg mails per day
+    let avg = processor.MessagesPerDay(items)
+
+    // Mails in last 24h
+    let mails24h = processor.MasseagesLast24h(items)
+
+    // Mails today
+    let mailsToday = processor.MessagesToday(items)
+
+    let test1 = processor.SendersToday(items)
+    let test2 = processor.SendersLast24h(items)
+
+    // Top sender today
+    let topSender = processor.TopSenderToday(items)
+
+    Assert.IsTrue(true)
+
+[<Test>]
 let ``All statistics`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(path)

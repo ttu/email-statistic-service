@@ -40,6 +40,40 @@ type Processor() =
             |> Seq.distinct
             |> Seq.length
 
+    member this.MessagesPerDay(items : List<EMail>) : int = 
+        let days = this.DaysThatHaveSentMails(items)
+        items.Length / days
+
+    member this.MasseagesLast24h(items : List<EMail>) : int = 
+        items
+            |> Seq.filter(fun x -> x.Date.Date > DateTime.Now.AddDays(-1.0))
+            |> Seq.length
+
+    member this.MessagesToday(items : List<EMail>) : int = 
+        items
+            |> Seq.filter(fun x -> x.Date.Date = DateTime.Now.Date)
+            |> Seq.length
+
+     member this.SendersAt(items : List<EMail>, filterFunc) = 
+        items
+            |> Seq.filter(filterFunc)
+            |> Seq.groupBy(fun x -> x.From)
+            |> Seq.map(fun (name, mails) -> (name, Seq.length mails))
+            |> Seq.sortBy snd
+            |> Seq.toList
+            |> List.rev
+
+    member this.SendersToday(items : List<EMail>) = 
+        this.SendersAt(items, fun x -> x.Date.Date = DateTime.Now.Date)
+         
+    member this.SendersLast24h(items : List<EMail>) = 
+        this.SendersAt(items, fun x -> x.Date.Date > DateTime.Now.AddDays(-1.0))
+
+    member this.TopSenderToday(items : List<EMail>) : string * int = 
+        items
+            |> this.SendersToday
+            |> Seq.head
+
     member this.LastMailDate(items : List<EMail>) : DateTime =
         items
             |> List.sortBy(fun x -> x.Date)

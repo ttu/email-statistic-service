@@ -110,7 +110,7 @@ namespace OwinSelfHostWebAPI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("{0} -Excpetion: {1}", DateTime.Now, ex.Message);
+                Debug.WriteLine("{0} - Exception: {1}", DateTime.Now, ex.Message);
                 return;
             }
 

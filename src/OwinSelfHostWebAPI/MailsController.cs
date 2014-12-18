@@ -60,6 +60,7 @@ namespace OwinSelfHostWebAPI
 
         [Route("api/mails/users/years")]
         [HttpGet]
+        [Authorize]
         public IEnumerable<Tuple<string, IEnumerable<Tuple<int, int>>>> GetBySenderByYears()
         {
             return _service.GetBySenderByYears();

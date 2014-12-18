@@ -10,3 +10,6 @@ http://www.asp.net/web-api/overview/hosting-aspnet-web-api/use-owin-to-self-host
 
 Static html with OWIN
 http://msarchet.com/using-the-asp-dot-net-bundling-pipeline-with-owin/
+
+Authentication for SPA and WebAPI
+https://bitbucket.org/david.antaramian/so-21662778-spa-authentication-example/overview

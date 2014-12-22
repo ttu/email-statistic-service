@@ -110,7 +110,7 @@ type Processor() =
     member this.MailsByWeekdays(items : List<EMail>) =
         items
             |> Seq.groupBy(fun x -> x.Date.Year)
-            |> Seq.map(fun (year, mails) -> (year, Seq.sortBy (fun (x,y) -> x ) (Seq.groupBy (fun x -> x.Date.DayOfWeek) mails)))
+            |> Seq.map(fun (year, mails) -> (year, Seq.sortBy (fun (x,y) -> x) (Seq.groupBy (fun x -> x.Date.DayOfWeek) mails)))
             |> Seq.map(fun (year, mailsByWeekday) -> (year, Seq.map (fun (day, mails) -> (day, Seq.length mails)) mailsByWeekday))
             |> Seq.toList
 
@@ -118,7 +118,7 @@ type Processor() =
     member this.MailsByWeekdaysPercent(items : List<EMail>) =
         items
             |> Seq.groupBy(fun x -> x.Date.Year)
-            |> Seq.map(fun (year, mails) -> (year, Seq.sortBy (fun (x,y) -> x ) (Seq.groupBy (fun x -> x.Date.DayOfWeek) mails)))
+            |> Seq.map(fun (year, mails) -> (year, Seq.sortBy (fun (x,y) -> x) (Seq.groupBy (fun x -> x.Date.DayOfWeek) mails)))
             |> Seq.map(fun (year, mailsByWeekday) -> (year, Seq.map (fun (day, mails) -> (day, (float(Seq.length mails) / Seq.reduce (fun sum next -> sum + next) (Seq.map (fun (day, mails) -> float(Seq.length mails)) mailsByWeekday) ))) mailsByWeekday))
             |> Seq.toList
 
@@ -132,6 +132,13 @@ type Processor() =
         items
             |> Seq.groupBy(fun x -> x.Date.Year)
             |> Seq.map(fun (key, value) -> (key, Seq.length value))
+            |> Seq.toList
+
+     member this.TotalMailsByYearAndMonth(items : List<EMail>) =
+        items
+            |> Seq.groupBy(fun x -> x.Date.Year)
+            |> Seq.map(fun (year, mails) -> (year, Seq.sortBy (fun (x, y) -> x) (Seq.groupBy (fun x -> x.Date.Month) mails)))
+            |> Seq.map(fun (year, monthlyMails) -> (year, Seq.map(fun (month, mails) -> (month, Seq.length mails)) monthlyMails))
             |> Seq.toList
 
     member this.YearsThatHaveData(items : List<EMail>) =

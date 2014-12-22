@@ -90,6 +90,7 @@ let ``All statistics`` () =
     let realDays = processor.DaysThatHaveSentMails(items)
 
     let yearTotals = processor.TotalMailsByYear(items)
+    let yearAndMonth = processor.TotalMailsByYearAndMonth(items)
 
     let bySenderByYears = processor.TotalMailsBySenderByYears(items)
     let bySenderByMonths = processor.TotalMailsBySenderByMonths(items)

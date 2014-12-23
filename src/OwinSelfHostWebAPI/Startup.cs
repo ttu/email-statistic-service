@@ -45,6 +45,7 @@ namespace OwinSelfHostWebAPI
             //    defaults: new { id = RouteParameter.Optional }
             //);
 
+
             config.MapHttpAttributeRoutes();
 
             // Retrun JSON
@@ -52,7 +53,11 @@ namespace OwinSelfHostWebAPI
 
             appBuilder.UseCors(CorsOptions.AllowAll);
 
-            appBuilder.UseOAuthBearerTokens(OAuthOptions);
+            // Use Basic authentication
+            config.Filters.Add(new BasicAuthenticationFilter());
+
+            // Use OAuth
+            //appBuilder.UseOAuthBearerTokens(OAuthOptions);
 
             appBuilder.UseWebApi(config);
 

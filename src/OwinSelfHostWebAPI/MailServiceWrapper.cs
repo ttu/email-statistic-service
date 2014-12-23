@@ -100,6 +100,8 @@ namespace OwinSelfHostWebAPI
 
         private void UpdateMails()
         {
+            LastUpdate = DateTime.Now;
+
             var lastDate = _proc.LastMailDate(_fsMails);
 
             FSharpList<Common.EMail> newMails;

@@ -8,11 +8,13 @@ open MailProcessor
 let path = __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json"
 
 [<Test>]
+[<Ignore>]
 let ``writeValidFilesToAFile`` () =
     let success = MailReader.writeValidFilesToAFile(path)
     Assert.IsTrue(success)
 
 [<Test>]
+[<Ignore>]
 let ``Get mails after date`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(path)
@@ -25,6 +27,7 @@ let ``Get mails after date`` () =
     Assert.IsTrue(Seq.length items > 0)
 
 [<Test>]
+[<Ignore>]
 let ``Update mails after last`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(path)
@@ -39,6 +42,7 @@ let ``Update mails after last`` () =
     Assert.IsTrue(success)
 
 [<Test>]
+[<Ignore>]
 let ``updateAndWriteAfterLastDate`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(path)
@@ -49,6 +53,7 @@ let ``updateAndWriteAfterLastDate`` () =
     Assert.IsTrue(items.Length <= newMails.Length)
 
 [<Test>]
+[<Ignore>]
 let ``Get mail id`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(path)

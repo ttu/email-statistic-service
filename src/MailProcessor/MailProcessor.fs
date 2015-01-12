@@ -72,7 +72,10 @@ type Processor() =
     member this.TopSenderToday(items : List<EMail>) : string * int = 
         items
             |> this.SendersToday
-            |> Seq.head
+            |> (fun x -> match List.length x with
+                    | 0 -> "", 0
+                    | _ -> x.Head
+                )
 
     member this.LastMailDate(items : List<EMail>) : DateTime =
         items

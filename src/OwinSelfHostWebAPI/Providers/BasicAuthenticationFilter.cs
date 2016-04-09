@@ -51,7 +51,7 @@ namespace OwinSelfHostWebAPI.Providers
                 //context.ErrorResult = new AuthenticationFailureResult("Invalid credentials", request);
             }
 
-            if (userNameAndPasword.Item1 == "test" && userNameAndPasword.Item2 == "test")
+            if (UserConfig.IsUserAllowd(userNameAndPasword.Item1, userNameAndPasword.Item2))
             {
                 IPrincipal principal = CreatePrincipal(userNameAndPasword.Item1, userNameAndPasword.Item2);
                 context.Principal = principal;

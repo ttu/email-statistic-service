@@ -16,7 +16,7 @@ type Processor() =
 
         JsonConvert.DeserializeObject<List<EMail>>(json)
 
-     member this.GetAllItems() : List<EMail> =
+    member this.GetAllItems() : List<EMail> =
         this.GetItems()
 
     member this.LastMail(items : List<EMail>) : EMail =

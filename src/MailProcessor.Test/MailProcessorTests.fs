@@ -93,6 +93,9 @@ let ``All statistics`` () =
     let yearAndMonth = processor.TotalMailsByYearAndMonth(items)
 
     let bySenderByYears = processor.TotalMailsBySenderByYears(items)
+    
+    Assert.IsTrue(bySenderByYears.Head |> snd |> Seq.head |> snd |> fun(x) -> x = 35);
+
     let bySenderByMonths = processor.TotalMailsBySenderByMonths(items)
 
     let mailByWeekDays = processor.MailsByWeekdays(items)

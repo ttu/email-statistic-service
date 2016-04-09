@@ -33,7 +33,7 @@ namespace OwinSelfHostWebAPI.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            if (context.UserName == "test" && context.Password == "test")
+            if (UserConfig.IsUserAllowd(context.UserName, context.Password))
             {
                 ClaimsIdentity oAuthIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
                 ClaimsIdentity cookiesIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationType);

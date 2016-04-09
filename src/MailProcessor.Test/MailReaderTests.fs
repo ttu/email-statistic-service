@@ -14,6 +14,13 @@ let ``writeValidFilesToAFile`` () =
     Assert.IsTrue(success)
 
 [<Test>]
+let ``writeMailsToCSV`` () =
+    let processor = new MailProcessor.Processor()
+    let items = processor.GetItems(path)
+    let success = MailReader.writeMailsAsCSV(items)
+    Assert.IsTrue(success)
+
+[<Test>]
 [<Ignore>]
 let ``Get mails after date`` () =
     let processor = new MailProcessor.Processor()
@@ -27,7 +34,7 @@ let ``Get mails after date`` () =
     Assert.IsTrue(Seq.length items > 0)
 
 [<Test>]
-[<Ignore>]
+//[<Ignore>]
 let ``Update mails after last`` () =
     let processor = new MailProcessor.Processor()
     let items = processor.GetItems(path)

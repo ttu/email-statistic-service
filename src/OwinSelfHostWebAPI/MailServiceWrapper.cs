@@ -10,13 +10,13 @@ namespace OwinSelfHostWebAPI
 {
     public interface IMailService
     {
-        List<Common.EMail> GetMails();
+        IList<Common.EMail> GetMails();
 
-        List<Tuple<string, int>> GetYearlyStats(int year);
+        IList<Tuple<string, int>> GetYearlyStats(int year);
 
-        List<Tuple<int, int>> GetYearlyStats();
+        IList<Tuple<int, int>> GetYearlyStats();
 
-        List<int> GetYears();
+        IList<int> GetYears();
     }
 
     public class MailServiceWrapper : IMailService
@@ -42,23 +42,22 @@ namespace OwinSelfHostWebAPI
 
         public DateTime LastUpdate { get; private set; }
 
-        public List<Common.EMail> GetMails()
+        public IList<Common.EMail> GetMails()
         {
-            lock (_mails)
-                return _mails;
+            return _mails.AsReadOnly();
         }
 
-        public List<int> GetYears()
+        public IList<int> GetYears()
         {
             return _proc.YearsThatHaveData(_fsMails).ToList();
         }
 
-        public List<Tuple<int, int>> GetYearlyStats()
+        public IList<Tuple<int, int>> GetYearlyStats()
         {
             return _proc.TotalMailsByYear(_fsMails).ToList();
         }
 
-        public List<Tuple<string, int>> GetYearlyStats(int year)
+        public IList<Tuple<string, int>> GetYearlyStats(int year)
         {
             return _proc.TotalMailsBySenderByYear(_fsMails, year).ToList();
         }
@@ -124,8 +123,7 @@ namespace OwinSelfHostWebAPI
 
             _fsMails = updatedCollection;
 
-            lock (_mails)
-                _mails = _fsMails.ToList();
+            _mails = _fsMails.ToList();
         }
     }
 }

@@ -7,24 +7,14 @@ namespace OwinSelfHostWebAPI
 {
     public class MailsController : ApiController
     {
-        private List<Common.EMail> _mails = new List<Common.EMail>();
         private MailServiceWrapper _service;
 
         public MailsController()
         {
-            _service = Startup.MailService.Value;
-            _mails = _service.GetMails();   
+            _service = Startup.MailService.Value; 
         }
 
-        // GET api/mails
-        //public IEnumerable<Common.EMail> Get()
-        //{
-        //    return _mails.Take(10); //.Select(i => new { Sender = i.From, When = i.Date });
-        //    //return new string[] { "value1", "value2" };
-        //}
-
-        [Route("api/mails/updatetime/")]
-        [HttpGet]
+        [Route("api/mails/updatetime/"), HttpGet]
         public DateTime Updated()
         {
             return _service.LastUpdate;
@@ -34,7 +24,7 @@ namespace OwinSelfHostWebAPI
         [HttpGet]
         public IEnumerable<Common.EMail> From(string sender)
         {
-            return _mails.Where(m => m.From == sender).Take(10);
+            return _service.GetMails().Where(m => m.From == sender).Take(10);
         }
 
         [Route("api/mails/year/{year}")]
@@ -60,7 +50,7 @@ namespace OwinSelfHostWebAPI
 
         [Route("api/mails/users/years")]
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public IEnumerable<Tuple<string, IEnumerable<Tuple<int, int>>>> GetBySenderByYears()
         {
             return _service.GetBySenderByYears();

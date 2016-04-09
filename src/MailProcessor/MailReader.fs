@@ -104,5 +104,16 @@
     let updateAndWriteAfterLastDate(oldItems : List<Common.EMail>, lastDate : DateTime) = 
         let newMails = downloadMailsAfterDate(lastDate)
         let newCollection = List.append oldItems newMails
-        writeMails(newCollection, __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
+        let success = writeMails(newCollection, __SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.json")
         newCollection
+
+    let writeMailsAsCSV(items : List<Common.EMail>) =
+        let textData = 
+            items
+                |> List.map(fun x -> String.Format("{0}, {1}, {2}, {3}", x.From, x.Date.ToString(), x.Date.DayOfWeek, x.Date.Hour))
+                |> String.concat "\n"
+            
+        use fs = File.Open(__SOURCE_DIRECTORY__ + @"\..\MailProcessor\emails.csv", FileMode.Create)
+        use sw = new StreamWriter(fs)
+        sw.WriteLine(textData)
+        true
